@@ -40,9 +40,8 @@ namespace api_of_your_choice.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Maker")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("MakerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -60,7 +59,9 @@ namespace api_of_your_choice.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Flyrod");
+                    b.HasIndex("MakerId");
+
+                    b.ToTable("Flyrods");
 
                     b.HasData(
                         new
@@ -69,7 +70,7 @@ namespace api_of_your_choice.Migrations
                             Construction = "Hex",
                             LengthFeet = 6.0,
                             LineWeight = "WF4",
-                            Maker = "Leonard",
+                            MakerId = 1,
                             Model = "37H",
                             Sections = 2,
                             Type = "Bamboo",
@@ -81,7 +82,7 @@ namespace api_of_your_choice.Migrations
                             Construction = "Hex",
                             LengthFeet = 7.0,
                             LineWeight = "DT4",
-                            Maker = "Payne",
+                            MakerId = 2,
                             Model = "98",
                             Sections = 2,
                             Type = "Bamboo",
@@ -93,7 +94,7 @@ namespace api_of_your_choice.Migrations
                             Construction = "Hex",
                             LengthFeet = 7.5,
                             LineWeight = "DT5",
-                            Maker = "Orvis",
+                            MakerId = 3,
                             Model = "Far and Fine",
                             Sections = 2,
                             Type = "Bamboo",
@@ -102,10 +103,22 @@ namespace api_of_your_choice.Migrations
                         new
                         {
                             Id = 4,
+                            Construction = "Hex",
+                            LengthFeet = 8.5,
+                            LineWeight = "DT7",
+                            MakerId = 9,
+                            Model = "SF8672",
+                            Sections = 2,
+                            Type = "Bamboo",
+                            YearMade = 1962
+                        },
+                        new
+                        {
+                            Id = 5,
                             Construction = "Penta",
                             LengthFeet = 7.5,
                             LineWeight = "DT5",
-                            Maker = "Uslan",
+                            MakerId = 4,
                             Model = "7513",
                             Sections = 2,
                             Type = "Bamboo",
@@ -113,11 +126,11 @@ namespace api_of_your_choice.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 6,
                             Construction = "Hex",
                             LengthFeet = 8.5,
                             LineWeight = "WF6",
-                            Maker = "EC Powell",
+                            MakerId = 5,
                             Model = "B9",
                             Sections = 2,
                             Type = "Bamboo",
@@ -125,11 +138,11 @@ namespace api_of_your_choice.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 7,
                             Construction = "Quad",
                             LengthFeet = 7.5,
                             LineWeight = "WF6",
-                            Maker = "WE Edwards",
+                            MakerId = 6,
                             Model = "37",
                             Sections = 2,
                             Type = "Bamboo",
@@ -137,23 +150,23 @@ namespace api_of_your_choice.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 8,
                             Construction = "Hex",
                             LengthFeet = 8.5,
                             LineWeight = "DT7",
-                            Maker = "Browning",
-                            Model = "Silaflex",
+                            MakerId = 7,
+                            Model = "Medallion",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1975
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 9,
                             Construction = "Tubular",
                             LengthFeet = 8.0,
                             LineWeight = "WF6",
-                            Maker = "Fenwick",
+                            MakerId = 8,
                             Model = "FF80",
                             Sections = 2,
                             Type = "Fiberglass",
@@ -161,16 +174,133 @@ namespace api_of_your_choice.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 10,
+                            Construction = "Tubular",
+                            LengthFeet = 7.5,
+                            LineWeight = "WF6",
+                            MakerId = 3,
+                            Model = "Fullflex A",
+                            Sections = 2,
+                            Type = "Fiberglass",
+                            YearMade = 1977
+                        },
+                        new
+                        {
+                            Id = 11,
                             Construction = "Tubular",
                             LengthFeet = 8.0,
                             LineWeight = "WF4",
-                            Maker = "Winston",
+                            MakerId = 9,
                             Model = "Stalker",
                             Sections = 2,
                             Type = "Fiberglass",
                             YearMade = 1979
                         });
+                });
+
+            modelBuilder.Entity("api_of_your_choice.Models.Maker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("YearFounded")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Makers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Leonard",
+                            Type = "Company",
+                            YearFounded = 1933
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Payne",
+                            Type = "Company",
+                            YearFounded = 1929
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Orvis",
+                            Type = "Company",
+                            YearFounded = 1889
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Uslan",
+                            Type = "Individual",
+                            YearFounded = 1933
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "EC Powell",
+                            Type = "Company",
+                            YearFounded = 1919
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "WE Edwards",
+                            Type = "Individual",
+                            YearFounded = 1940
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Browning Silaflex",
+                            Type = "Company",
+                            YearFounded = 1970
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Fenwick",
+                            Type = "Company",
+                            YearFounded = 1972
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Winston",
+                            Type = "Company",
+                            YearFounded = 1933
+                        });
+                });
+
+            modelBuilder.Entity("api_of_your_choice.Models.Flyrod", b =>
+                {
+                    b.HasOne("api_of_your_choice.Models.Maker", "Maker")
+                        .WithMany("Flyrods")
+                        .HasForeignKey("MakerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Maker");
+                });
+
+            modelBuilder.Entity("api_of_your_choice.Models.Maker", b =>
+                {
+                    b.Navigation("Flyrods");
                 });
 #pragma warning restore 612, 618
         }

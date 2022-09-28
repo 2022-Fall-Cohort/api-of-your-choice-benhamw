@@ -17,9 +17,32 @@ namespace api_of_your_choice.Controllers
         }   
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
+        //public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
+        //{
+        //    return await _db.Makers.ToListAsync();
+        //}
+
+        //public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
+        //{
+        //    return await _db.Flyrods.ToListAsync();
+        //}
+
+        //public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
+        //{
+        //    return await _db.Flyrods.Include(x => x.Maker).ToListAsync();
+        //}
+
+        public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
         {
-            return await _db.Flyrod.ToListAsync();
+            return await _db.Makers.Include(x => x.Flyrods).ToListAsync();
         }
+
+        //public IEnumerable<Maker> GetMakers()
+        //{
+        //    IEnumerable<Maker> makers =
+        //        _db.Makers.Include(x => x.Flyrods).ToList();
+
+        //    return makers;
+        //}
     }
 }
