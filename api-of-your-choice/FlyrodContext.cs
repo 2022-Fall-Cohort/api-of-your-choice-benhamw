@@ -4,8 +4,8 @@ namespace api_of_your_choice
 {
     public class FlyrodContext : DbContext
     {
-        public DbSet<Maker> Makers { get; set; }
-        public DbSet<Flyrod> Flyrods { get; set; }
+        public DbSet<Maker>? Makers { get; set; }
+        public DbSet<Flyrod>? Flyrods { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

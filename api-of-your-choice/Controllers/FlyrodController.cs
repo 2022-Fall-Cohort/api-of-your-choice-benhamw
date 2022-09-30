@@ -14,35 +14,109 @@ namespace api_of_your_choice.Controllers
         public FlyrodController(FlyrodContext db)
         {
             _db = db;
-        }   
+        }
 
+
+  
+        // FULL CODE STARTS HERE
+
+ 
         [HttpGet]
         //public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
         //{
-        //    return await _db.Makers.ToListAsync();
+        //    return await _db.Makers.Include(x => x.Flyrods).ToListAsync();
         //}
 
-        //public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
-        //{
-        //    return await _db.Flyrods.ToListAsync();
-        //}
-
-        //public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
-        //{
-        //    return await _db.Flyrods.Include(x => x.Maker).ToListAsync();
-        //}
-
-        public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
+        public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
         {
-            return await _db.Makers.Include(x => x.Flyrods).ToListAsync();
+            return await _db.Flyrods.ToListAsync();
         }
 
-        //public IEnumerable<Maker> GetMakers()
-        //{
-        //    IEnumerable<Maker> makers =
-        //        _db.Makers.Include(x => x.Flyrods).ToList();
+        // GET: api/Flyrods/5 - "Read" 1 record from the database
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Flyrod>> GetFlyrod(int id)
+        {
+            if (_db.Flyrods == null)
+            {
+                return NotFound();
+            }
+            var flyRod = await _db.Flyrods.FindAsync(id);
 
-        //    return makers;
-        //}
+            if (flyRod == null)
+            {
+                return NotFound();
+            }
+
+            return flyRod;
+        }
+
+        // PUT: api/Flyrods/5 - "Update" a single record in the database
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutFlyrod(int id, Flyrod flyRod)
+        {
+            if (id != flyRod.Id)
+            {
+                return BadRequest();
+            }
+
+            _db.Entry(flyRod).State = EntityState.Modified;
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FlyRodExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Flyrods - "Create/Insert" a record into the database
+        [HttpPost]
+        public async Task<ActionResult<Flyrod>> PostFlyrod(Flyrod flyRod)
+        {
+            if (_db.Flyrods == null)
+            {
+                return Problem("Entity set 'FlyrodContext.Flyrods'  is null.");
+            }
+            _db.Flyrods.Add(flyRod);
+            await _db.SaveChangesAsync();
+
+            return CreatedAtAction("GetFlyrod", new { id = flyRod.Id }, flyRod);
+        }
+
+        // DELETE: api/Flyrods/5 - "Delete" a record from the database
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFlyrod(int id)
+        {
+            if (_db.Flyrods == null)
+            {
+                return NotFound();
+            }
+            var flyRod = await _db.Flyrods.FindAsync(id);
+            if (flyRod == null)
+            {
+                return NotFound();
+            }
+
+            _db.Flyrods.Remove(flyRod);
+            await _db.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool FlyRodExists(int id)
+        {
+            return (_db.Flyrods?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }
