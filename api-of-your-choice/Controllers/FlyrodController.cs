@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace api_of_your_choice.Controllers
 {
@@ -15,13 +16,13 @@ namespace api_of_your_choice.Controllers
         {
             _db = db;
         }
-
-
   
-        // FULL CODE STARTS HERE
-
+        // GET/POST/UPDATE/DELETE STARTS HERE
  
         [HttpGet]
+        // Previous table join using virtual list in maker.cs, below:
+        // public virtual List<Flyrod> Flyrods { get; set; }
+        //
         //public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
         //{
         //    return await _db.Makers.Include(x => x.Flyrods).ToListAsync();
@@ -88,6 +89,8 @@ namespace api_of_your_choice.Controllers
             {
                 return Problem("Entity set 'FlyrodContext.Flyrods'  is null.");
             }
+
+            //_db.Flyrods.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[User] ON"); ;
             _db.Flyrods.Add(flyRod);
             await _db.SaveChangesAsync();
 

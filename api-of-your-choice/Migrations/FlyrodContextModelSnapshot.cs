@@ -59,8 +59,6 @@ namespace api_of_your_choice.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MakerId");
-
                     b.ToTable("Flyrods");
 
                     b.HasData(
@@ -285,22 +283,6 @@ namespace api_of_your_choice.Migrations
                             Type = "Company",
                             YearFounded = 1933
                         });
-                });
-
-            modelBuilder.Entity("api_of_your_choice.Models.Flyrod", b =>
-                {
-                    b.HasOne("api_of_your_choice.Models.Maker", "Maker")
-                        .WithMany("Flyrods")
-                        .HasForeignKey("MakerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Maker");
-                });
-
-            modelBuilder.Entity("api_of_your_choice.Models.Maker", b =>
-                {
-                    b.Navigation("Flyrods");
                 });
 #pragma warning restore 612, 618
         }

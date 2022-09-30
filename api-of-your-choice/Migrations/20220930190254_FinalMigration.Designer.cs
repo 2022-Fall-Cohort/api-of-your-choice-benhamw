@@ -11,8 +11,8 @@ using api_of_your_choice;
 namespace api_of_your_choice.Migrations
 {
     [DbContext(typeof(FlyrodContext))]
-    [Migration("20220928180406_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20220930190254_FinalMigration")]
+    partial class FinalMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,8 +60,6 @@ namespace api_of_your_choice.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MakerId");
 
                     b.ToTable("Flyrods");
 
@@ -287,22 +285,6 @@ namespace api_of_your_choice.Migrations
                             Type = "Company",
                             YearFounded = 1933
                         });
-                });
-
-            modelBuilder.Entity("api_of_your_choice.Models.Flyrod", b =>
-                {
-                    b.HasOne("api_of_your_choice.Models.Maker", "Maker")
-                        .WithMany("Flyrods")
-                        .HasForeignKey("MakerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Maker");
-                });
-
-            modelBuilder.Entity("api_of_your_choice.Models.Maker", b =>
-                {
-                    b.Navigation("Flyrods");
                 });
 #pragma warning restore 612, 618
         }

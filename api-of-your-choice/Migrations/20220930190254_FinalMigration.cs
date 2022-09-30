@@ -4,25 +4,10 @@
 
 namespace api_of_your_choice.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class FinalMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Makers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearFounded = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Makers", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Flyrods",
                 columns: table => new
@@ -41,28 +26,21 @@ namespace api_of_your_choice.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Flyrods", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Flyrods_Makers_MakerId",
-                        column: x => x.MakerId,
-                        principalTable: "Makers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Makers",
-                columns: new[] { "Id", "Name", "Type", "YearFounded" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "Makers",
+                columns: table => new
                 {
-                    { 1, "Leonard", "Company", 1933 },
-                    { 2, "Payne", "Company", 1929 },
-                    { 3, "Orvis", "Company", 1889 },
-                    { 4, "Uslan", "Individual", 1933 },
-                    { 5, "EC Powell", "Company", 1919 },
-                    { 6, "WE Edwards", "Individual", 1940 },
-                    { 7, "Browning Silaflex", "Company", 1970 },
-                    { 8, "Fenwick", "Company", 1972 },
-                    { 9, "Winston", "Company", 1933 }
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    YearFounded = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Makers", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
@@ -83,10 +61,21 @@ namespace api_of_your_choice.Migrations
                     { 11, "Tubular", 8.0, "WF4", 9, "Stalker", 2, "Fiberglass", 1979 }
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Flyrods_MakerId",
-                table: "Flyrods",
-                column: "MakerId");
+            migrationBuilder.InsertData(
+                table: "Makers",
+                columns: new[] { "Id", "Name", "Type", "YearFounded" },
+                values: new object[,]
+                {
+                    { 1, "Leonard", "Company", 1933 },
+                    { 2, "Payne", "Company", 1929 },
+                    { 3, "Orvis", "Company", 1889 },
+                    { 4, "Uslan", "Individual", 1933 },
+                    { 5, "EC Powell", "Company", 1919 },
+                    { 6, "WE Edwards", "Individual", 1940 },
+                    { 7, "Browning Silaflex", "Company", 1970 },
+                    { 8, "Fenwick", "Company", 1972 },
+                    { 9, "Winston", "Company", 1933 }
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
