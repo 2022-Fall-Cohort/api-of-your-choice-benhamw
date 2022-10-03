@@ -11,7 +11,6 @@
         public int YearMade { get; set; }
         public string Type { get; set; }
         public string Construction { get; set; }
-        
 
     }
 }
