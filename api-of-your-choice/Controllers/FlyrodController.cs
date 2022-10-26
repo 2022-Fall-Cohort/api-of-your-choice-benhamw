@@ -16,24 +16,21 @@ namespace api_of_your_choice.Controllers
         {
             _db = db;
         }
-  
-        // GET/POST/UPDATE/DELETE STARTS HERE
- 
-        [HttpGet]
-        // Previous table join using virtual list in maker.cs, below:
-        // public virtual List<Flyrod> Flyrods { get; set; }
-        //
-        //public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
-        //{
-        //    return await _db.Makers.Include(x => x.Flyrods).ToListAsync();
-        //}
 
+        // GET/POST/UPDATE/DELETE STARTS HERE
+
+        //Get all Flyrods
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Flyrod>>> GetFlyrods()
         {
-            return await _db.Flyrods.ToListAsync();
+            if (_db.Flyrods == null)
+            {
+                return NotFound();
+            }
+            return await _db.Flyrods.Include(m => m.Maker).ToListAsync();
         }
 
-        // GET: api/Flyrods/5 - "Read" 1 record from the database
+        // GET: 1 flyrod from the database
         [HttpGet("{id}")]
         public async Task<ActionResult<Flyrod>> GetFlyrod(int id)
         {
@@ -41,26 +38,26 @@ namespace api_of_your_choice.Controllers
             {
                 return NotFound();
             }
-            var flyRod = await _db.Flyrods.FindAsync(id);
+            var flyrod = await _db.Flyrods.Include(m => m.Maker).Include(f => f.Maker.flyrods).FirstOrDefaultAsync(i => i.Id == id);
 
-            if (flyRod == null)
+            if (flyrod == null)
             {
                 return NotFound();
             }
 
-            return flyRod;
+            return flyrod;
         }
 
-        // PUT: api/Flyrods/5 - "Update" a single record in the database
+        // PUT: Update a single record in the database
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFlyrod(int id, Flyrod flyRod)
+        public async Task<IActionResult> PutFlyrod(int id, Flyrod flyrod)
         {
-            if (id != flyRod.Id)
+            if (id != flyrod.Id)
             {
                 return BadRequest();
             }
 
-            _db.Entry(flyRod).State = EntityState.Modified;
+            _db.Entry(flyrod).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +65,7 @@ namespace api_of_your_choice.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FlyRodExists(id))
+                if (!FlyrodExists(id))
                 {
                     return NotFound();
                 }
@@ -81,23 +78,22 @@ namespace api_of_your_choice.Controllers
             return NoContent();
         }
 
-        // POST: api/Flyrods - "Create/Insert" a record into the database
+        // POST: Create/Insert a Flyrod into the database
         [HttpPost]
-        public async Task<ActionResult<Flyrod>> PostFlyrod(Flyrod flyRod)
+        public async Task<ActionResult<Flyrod>> PostFlyrod(Flyrod flyrod)
         {
             if (_db.Flyrods == null)
             {
                 return Problem("Entity set 'FlyrodContext.Flyrods'  is null.");
             }
 
-            //_db.Flyrods.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[User] ON"); ;
-            _db.Flyrods.Add(flyRod);
+            _db.Flyrods.Add(flyrod);
             await _db.SaveChangesAsync();
 
-            return CreatedAtAction("GetFlyrod", new { id = flyRod.Id }, flyRod);
+            return CreatedAtAction("GetFlyrod", new { id = flyrod.Id }, flyrod);
         }
 
-        // DELETE: api/Flyrods/5 - "Delete" a record from the database
+        // DELETE: Delete a flyrod from the database
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFlyrod(int id)
         {
@@ -105,19 +101,20 @@ namespace api_of_your_choice.Controllers
             {
                 return NotFound();
             }
-            var flyRod = await _db.Flyrods.FindAsync(id);
-            if (flyRod == null)
+            var flyrod = await _db.Flyrods.FindAsync(id);
+            if (flyrod == null)
             {
                 return NotFound();
             }
 
-            _db.Flyrods.Remove(flyRod);
+            _db.Flyrods.Remove(flyrod);
             await _db.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool FlyRodExists(int id)
+        //Check whether Flyrod exists
+        private bool FlyrodExists(int id)
         {
             return (_db.Flyrods?.Any(e => e.Id == id)).GetValueOrDefault();
         }

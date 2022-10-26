@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace api_of_your_choice.Controllers
 {
@@ -19,29 +18,27 @@ namespace api_of_your_choice.Controllers
 
         // GET/POST/UPDATE/DELETE STARTS HERE
 
+        // GET: Read all makers from the database
         [HttpGet]
-        // Previous table join using virtual list in maker.cs, below:
-        // public virtual List<Flyrod> Flyrods { get; set; }
-        //
-        //public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
-        //{
-        //    return await _db.Makers.Include(x => x.Flyrods).ToListAsync();
-        //}
-
         public async Task<ActionResult<IEnumerable<Maker>>> GetMakers()
-        {
-            return await _db.Makers.ToListAsync();
-        }
-
-        // GET: api/Makers/5 - "Read" 1 record from the database
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Maker>> GetMaker(int id)
         {
             if (_db.Makers == null)
             {
                 return NotFound();
             }
-            var maker = await _db.Makers.FindAsync(id);
+            return await _db.Makers.Include(f => f.flyrods).OrderBy(m => m.Name).ToListAsync();
+        }
+
+        // GET: Read 1 maker from the database
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Maker>> GetMaker(int? id)
+        {
+            if (id == null || _db.Makers == null)
+            {
+                return NotFound();
+            }
+
+            var maker = await _db.Makers.Include(f => f.flyrods).FirstOrDefaultAsync(i => i.Id == id);
 
             if (maker == null)
             {
@@ -51,7 +48,7 @@ namespace api_of_your_choice.Controllers
             return maker;
         }
 
-        // PUT: api/Maker/5 - "Update" a single record in the database
+        // PUT: Update a single record in the database
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMaker(int id, Maker maker)
         {
@@ -81,7 +78,7 @@ namespace api_of_your_choice.Controllers
             return NoContent();
         }
 
-        // POST: api/Makers - "Create/Insert" a record into the database
+        // POST: Create/Insert a maker into the database
         [HttpPost]
         public async Task<ActionResult<Maker>> PostMaker(Maker maker)
         {
@@ -96,7 +93,7 @@ namespace api_of_your_choice.Controllers
             return CreatedAtAction("GetMaker", new { id = maker.Id }, maker);
         }
 
-        // DELETE: api/Makers/5 - "Delete" a record from the database
+        // DELETE: Delete a maker from the database
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMaker(int id)
         {
@@ -116,9 +113,10 @@ namespace api_of_your_choice.Controllers
             return NoContent();
         }
 
+        //Check whether a maker exists
         private bool MakerExists(int id)
         {
-            return (_db.Makers?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_db.Makers?.Any(m => m.Id == id)).GetValueOrDefault();
         }
     }
 }

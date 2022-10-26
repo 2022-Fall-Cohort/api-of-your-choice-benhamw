@@ -11,8 +11,8 @@ using api_of_your_choice;
 namespace api_of_your_choice.Migrations
 {
     [DbContext(typeof(FlyrodContext))]
-    [Migration("20220930190254_FinalMigration")]
-    partial class FinalMigration
+    [Migration("20221025231951_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,10 @@ namespace api_of_your_choice.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RodImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Sections")
                         .HasColumnType("int");
 
@@ -61,6 +65,8 @@ namespace api_of_your_choice.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MakerId");
+
                     b.ToTable("Flyrods");
 
                     b.HasData(
@@ -72,6 +78,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "WF4",
                             MakerId = 1,
                             Model = "37H",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1959
@@ -84,6 +91,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "DT4",
                             MakerId = 2,
                             Model = "98",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1962
@@ -96,6 +104,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "DT5",
                             MakerId = 3,
                             Model = "Far and Fine",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1972
@@ -108,6 +117,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "DT7",
                             MakerId = 9,
                             Model = "SF8672",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1962
@@ -120,6 +130,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "DT5",
                             MakerId = 4,
                             Model = "7513",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1955
@@ -132,6 +143,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "WF6",
                             MakerId = 5,
                             Model = "B9",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1946
@@ -144,6 +156,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "WF6",
                             MakerId = 6,
                             Model = "37",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1950
@@ -156,6 +169,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "DT7",
                             MakerId = 7,
                             Model = "Medallion",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Bamboo",
                             YearMade = 1975
@@ -168,6 +182,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "WF6",
                             MakerId = 8,
                             Model = "FF80",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Fiberglass",
                             YearMade = 1977
@@ -180,6 +195,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "WF6",
                             MakerId = 3,
                             Model = "Fullflex A",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Fiberglass",
                             YearMade = 1977
@@ -192,6 +208,7 @@ namespace api_of_your_choice.Migrations
                             LineWeight = "WF4",
                             MakerId = 9,
                             Model = "Stalker",
+                            RodImage = "none",
                             Sections = 2,
                             Type = "Fiberglass",
                             YearMade = 1979
@@ -285,6 +302,22 @@ namespace api_of_your_choice.Migrations
                             Type = "Company",
                             YearFounded = 1933
                         });
+                });
+
+            modelBuilder.Entity("api_of_your_choice.Models.Flyrod", b =>
+                {
+                    b.HasOne("api_of_your_choice.Models.Maker", "Maker")
+                        .WithMany("flyrods")
+                        .HasForeignKey("MakerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Maker");
+                });
+
+            modelBuilder.Entity("api_of_your_choice.Models.Maker", b =>
+                {
+                    b.Navigation("flyrods");
                 });
 #pragma warning restore 612, 618
         }
