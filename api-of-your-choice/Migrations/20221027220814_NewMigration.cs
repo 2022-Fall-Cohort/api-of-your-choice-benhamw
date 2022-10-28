@@ -29,7 +29,6 @@ namespace api_of_your_choice.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MakerId = table.Column<int>(type: "int", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LengthFeet = table.Column<double>(type: "float", nullable: false),
                     Sections = table.Column<int>(type: "int", nullable: false),
@@ -37,7 +36,8 @@ namespace api_of_your_choice.Migrations
                     YearMade = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Construction = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RodImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RodImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MakerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

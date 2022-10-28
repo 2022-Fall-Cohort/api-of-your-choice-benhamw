@@ -11,7 +11,7 @@ using api_of_your_choice;
 namespace api_of_your_choice.Migrations
 {
     [DbContext(typeof(FlyrodContext))]
-    [Migration("20221026031202_NewMigration")]
+    [Migration("20221027220814_NewMigration")]
     partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
